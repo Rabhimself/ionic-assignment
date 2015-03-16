@@ -1,7 +1,7 @@
 angular.module('calorific.controllers', [])
 
 .controller('CalCtrl', function($scope, $stateParams, foodService) {
-  	foodService.getFoodList().then(function(foodList){
+  	foodService.getFoodList().success(function(foodList){
   		$scope.foodList = foodList;
 	});
 })

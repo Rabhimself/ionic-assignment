@@ -13,7 +13,7 @@ angular.module('calorific.services', [])
 
 	return{
 			getFoodList: function(){
-	    		return $http.get('js/foods.json').then(function(response){
+	    		return $http.get('js/foods.json').success(function(response){
 		          		foodList = response;
 		          		return foodList;
 	          	});
