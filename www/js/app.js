@@ -1,50 +1,14 @@
-angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.services'])
+angular.module('calorific', ['ionic'])
 
-.run(function($ionicPlatform) 
-{
-  $ionicPlatform.ready(function() 
-  {
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) 
-    {
+    if(window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
     }
-    if(window.StatusBar) 
-    {
+    if(window.StatusBar) {
       StatusBar.styleDefault();
     }
   });
-})
-
-.config(function($stateProvider, $urlRouterProvider) 
-{
-  $stateProvider
-
-  .state('cal', {
-    url: "/cal",
-    abstract: true,
-    templateUrl: "templates/cal.html"
-  })
-
-  .state('cal.dash', {
-    url: '/dash',
-    views: {
-      'cal-dash': {
-        templateUrl: 'templates/cal-dash.html',
-        controller: 'DashCtrl'
-      }
-    }
-  })
-
-      .state('cal.man', {
-    url: '/man',
-    views: {
-      'cal-man': {
-        templateUrl: 'templates/cal-man.html',
-        controller: 'CalCtrl'
-      }
-    }
-  });
-        $urlRouterProvider.otherwise('/cal/dash');
 })
