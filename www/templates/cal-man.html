@@ -1,11 +1,18 @@
-<ion-view view-title="Cal-Man">
+<ion-nav-view name="cal-man" view-title="Look Up Some Food">
+ <ion-header-bar class="bar-light bar-subheader">
+ <div>
+    <input type="search" placeholder="Filter foods..." ng-model="search" ng-focus="searchFocused = true"
+      ng-blur="searchFocused = false" ng-change="scrollTop()">
+    </div>
+  </ion-header-bar>
   	<ion-content>
-  	<ion-pane>
-  		<input ng-model="search">
-	</ion-pane>
-    <ion-list ng-repeat="food in foodList">
-		<ion-item ng-repeat="(key, val) in food">{{key}} {{val}}</ion-item>
-	</ion-list>
+  		<ion-pane>
+  			<input ng-model="search">
+		</ion-pane>
+		<ion-item collection-repeat="food in foodList | filter:search"  href="#/cal/man/{{food.id}}"> 
+  				{{food.name}}	
+  		<br>	Calories:{{food.calories}}  
+  		<br>   {{food.measure}}
+		</ion-item>
   	</ion-content>
 </ion-view>
-

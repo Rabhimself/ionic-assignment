@@ -1,10 +1,17 @@
 angular.module('calorific.services', [])
 
-.factory('calService', function() {
+.factory('calService', function(){
 	
-	var dailyCals = 2000;
+	var dailyCals = 0;
 
-	return dailyCals;
+	return{
+		getDCals: function(){
+			return dailyCals;
+		},
+		addDCals: function(data){
+			dailyCals += data;
+		}
+	} 
 
 })
     

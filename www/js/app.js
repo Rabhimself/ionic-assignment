@@ -26,7 +26,6 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
     abstract: true,
     templateUrl: "templates/cal.html"
   })
-
   .state('cal.dash', {
     url: '/dash',
     views: {
@@ -36,8 +35,7 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
       }
     }
   })
-
-      .state('cal.man', {
+  .state('cal.man', {
     url: '/man',
     views: {
       'cal-man': {
@@ -45,6 +43,16 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
         controller: 'CalCtrl'
       }
     }
-  });
+  })  
+  .state('cal.single', {
+    url: '/man/:foodId',
+    views: {
+      'cal-single': {
+        templateUrl: 'templates/cal-single.html',
+        controller: 'SingleCtrl'
+      }
+    }
+  })
+;
         $urlRouterProvider.otherwise('/cal/dash');
 })
