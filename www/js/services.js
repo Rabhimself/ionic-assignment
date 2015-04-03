@@ -3,18 +3,34 @@ angular.module('calorific.services', [])
 .factory('calService', function(){
 	
 	var dailyCals = 0;
+	var goal = { data : 0};
 
 	return{
 		getDCals: function(){
+			console.log("getDCals called");
 			return dailyCals;
+
 		},
 		addDCals: function(data){
-			dailyCals += data;
+			dailyCals = dailyCals + parseInt(data);
+			console.log("addDCals called");
+		},
+		setGoal: function(data){
+			goal.data = parseInt(data);
+			console.log("setGoal called");
+		},
+		getGoal: function(){
+			console.log("getGoal called");
+			return goal;
 		}
-	} 
+	};
 
 })
     
+.factory('todayService', function(){
+
+})
+
 .factory('foodService', function($http){
 	var foodList;
 

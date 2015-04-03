@@ -26,33 +26,35 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
     abstract: true,
     templateUrl: "templates/cal.html"
   })
+
   .state('cal.dash', {
     url: '/dash',
     views: {
       'cal-dash': {
-        templateUrl: 'templates/cal-dash.html',
+        templateUrl: "templates/cal-dash.html",
         controller: 'DashCtrl'
       }
     }
   })
-  .state('cal.man', {
-    url: '/man',
+
+  .state('cal.lookup', {
+    url: '/lookup',
     views: {
-      'cal-man': {
-        templateUrl: 'templates/cal-man.html',
-        controller: 'CalCtrl'
-      }
-    }
-  })  
-  .state('cal.single', {
-    url: '/man/:foodId',
-    views: {
-      'cal-single': {
-        templateUrl: 'templates/cal-single.html',
-        controller: 'SingleCtrl'
+      'lookup': {
+        templateUrl: "templates/lookup.html",
+        controller: 'LookupCtrl'
       }
     }
   })
-;
-        $urlRouterProvider.otherwise('/cal/dash');
-})
+
+  .state('cal.single', {
+    url: "/lookup/:foodId",
+    views: {
+      'cal-single': {
+        templateUrl: "templates/cal-single.html",
+        controller: 'SingleCtrl'
+      }
+    }
+  });
+  $urlRouterProvider.otherwise('/cal/dash');
+});
