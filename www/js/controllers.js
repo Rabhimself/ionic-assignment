@@ -27,7 +27,7 @@ angular.module('calorific.controllers', [])
 .controller('DashCtrl', function($scope, calService, $ionicPopup){
 	$scope.calories = calService.getDCals();
 	$scope.goal = calService.getGoal();
-	$scope.burnt = 250;
+	$scope.burnt = calService.getBurnt();
 
 	$scope.setGoal = function() {
 	$scope.data = {}
@@ -55,6 +55,35 @@ angular.module('calorific.controllers', [])
 	});
 	myPopup.then(function(result) {
   	calService.setGoal(parseInt(result));
+  });
+};
+
+	$scope.addBurnt = function() {
+	$scope.data = {}
+	var myPopup = $ionicPopup.show({
+
+	    template: '<input ng-model="data.burnt">',
+	    title: 'How many calories did you burn?',
+	    scope: $scope,
+	    buttons: [
+	    	{ text: 'Cancel' },
+	      		{
+		        text: '<b>Save</b>',
+		        type: 'button-positive',
+		        onTap: function(e) {
+		          	if (!$scope.data.burnt) {
+			            //don't allow the user to close unless he enters wifi password
+			            e.preventDefault();
+			        } 
+		          	else {
+			            return $scope.data.burnt;
+          			}
+	        	}	
+	      	}
+	    ]
+	});
+	myPopup.then(function(result) {
+  	calService.addBurnt(parseInt(result));
   });
 };
 })

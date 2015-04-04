@@ -22,6 +22,13 @@ angular.module('calorific.services', [])
 		getGoal: function(){
 			console.log("getGoal called");
 			return goal;
+		},
+		addBurnt: function(data){
+			console.log("addBurnt called");
+		},
+		getBurnt: function(){
+			console.log("getBurnt called");
+			return burnt;
 		}
 	};
 
