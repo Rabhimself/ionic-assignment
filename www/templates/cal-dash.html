@@ -1,9 +1,14 @@
 <ion-view cache-view = "false" view-title="Today at a Glance">
 	<ion-content>
 	<div>
- 		 <a ng-click="setGoal()" class="item item-icon-left">
-			<i class="icon ion-android-favorite-outline"></i>
-    		Today's Goal
+    <!-- This button will allow the user to set a Goal for the day-->
+    <!--  -->
+    <div class="item item-divider">
+      {{curDate | date:'EEEE, d MMM yyyy'}}
+    </div>
+      <a ng-click="setGoal()" class="item item-icon-left">
+		    <i class="icon ion-android-favorite-outline"></i>
+  		    Today's Goal
     		<span class="badge badge-positive">
       		{{goal.data}}
 			</span>
@@ -12,7 +17,7 @@
 			<i class="icon ion-pizza"></i>
     		Calories Consumed Today
     		<span class="badge badge-balanced">
-      		{{calories}}
+      		{{calories.data}}
 			</span>
   		</a>
   		<a ng-click="addBurnt()" class="item item-icon-left">
@@ -23,8 +28,13 @@
 			</span>
   		</a>
   	</div>
- <div class="item item-divider">
-    Today's Meals and Snacks
+ <div class="item item-divider item-icon-right">
+    Today's Meals and Snacks         
   </div>
+  <ion-item collection-repeat="food in todaysList"> 
+        <div class="item item-button-right">
+            {{food.name}} <br> Calories: {{food.calories}}  per  {{food.measure}}
+        </div>
+      </ion-item>
 	</ion-content>
 </ion-view>
