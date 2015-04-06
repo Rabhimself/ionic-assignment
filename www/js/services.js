@@ -4,6 +4,7 @@ angular.module('calorific.services', [])
 	
 	var dailyCals = 0;
 	var goal = { data : 0};
+	var burnt = {data : 0};
 
 	return{
 		getDCals: function(){
@@ -24,6 +25,7 @@ angular.module('calorific.services', [])
 			return goal;
 		},
 		addBurnt: function(data){
+			burnt.data = burnt.data + parseInt(data);
 			console.log("addBurnt called");
 		},
 		getBurnt: function(){
