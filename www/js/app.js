@@ -47,12 +47,12 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
     }
   })
 
-  .state('cal.single', {
-    url: "/lookup/:foodId",
+  .state('cal.history', {
+    url: "/history",
     views: {
-      'cal-single': {
-        templateUrl: "templates/cal-single.html",
-        controller: 'SingleCtrl'
+      'history': {
+        templateUrl: "templates/cal-history.html",
+        controller: 'HistoryCtrl'
       }
     }
   });

@@ -2,24 +2,34 @@ angular.module('calorific.services', [])
 
 //the main service that handles the caloric values
 .factory('calService', function(){
-	
+	//These are saved as objects so that the data is passed by reference
+	//when being returned to controllers
 	//calories consumed today
-	var dailyCals = { data : 0};
+	var dailyCals = { data : 0}
 	//todays goal (limit) for calorie consumption
-	var goal = { data : 0};
+	var goal = { data : 0 };
 	//tracks how many calories have been burnt via exercise
-	var burnt = {data : 0};
+	var burnt = { data : 0 };
+
+	
 
 	return{
 		//returns the dailyCals object
 		getDCals: function(){
-			console.log("getDCals called");
+			
+			if(!window.localStorage['dailyCals'])
+				window.localStorage['dailyCals'] = 0;
+			console.log("About to parse and store");
+			console.log(window.localStorage['dailyCals']);
+			dailyCals.data = parseInt(window.localStorage['dailyCals']);
+			console.log("getDCals called - returning: " +dailyCals.data);
 			return dailyCals;
 		},
 		//adds calories to the daily tracker
 		addDCals: function(data){
-			dailyCals.data = dailyCals.data + parseInt(data);
-			console.log("addDCals called");
+			dailyCals.data += parseInt(data);
+			window.localStorage['dailyCals'] = dailyCals.data;
+			console.log("addDCals called- dailyCals value is now " +JSON.stringify(dailyCals.data));
 		},
 		//set the daily goal, a popup passes in the new goal
 		setGoal: function(data){
