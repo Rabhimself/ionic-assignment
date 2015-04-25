@@ -1,75 +1,82 @@
 angular.module('calorific.controllers', [])
 
-.controller('LookupCtrl', function($scope, $stateParams, $ionicPopup, $filter, foodService, calService) {
+.controller('LookupCtrl', function($scope, $stateParams, $ionicPopup, $filter, foodService, calService, historyService) {
   	foodService.getFoodList().success(function(foodList){
   		$scope.foodList = foodList;
+  		$scope.servings = {data : 1};
 	});
 
 	$scope.showConfirm = function(food) {
 		var curDate = new Date;
+		
 		curDate = $filter('date')(curDate, "dd/MM/yyyy");
-   		var confirmPopup = $ionicPopup.confirm({
-     		title: 'Add Calories?',
-     		template: 'Add ' + food.calories + ' to today\'s food?'
-   		});
+   		var myPopup = $ionicPopup.show({
+     		title: 'Servings',
+     		scope : $scope,
+     		subTitle: 'How many servings?',
+     		template: '{{servings.data}} servings',
+     		buttons: [
 
-   		confirmPopup.then(function(res) {
-	 		if(res) {
-       			calService.addDCals(food.calories);
-       			console.log('added ' + food.calories);
-       			if(window.localStorage[curDate])
-       			{
-	       			window.localStorage[curDate] += JSON.stringify(food)+ ',';
-	       			console.log('added ' + JSON.stringify(food) + ' to localStorage');       				
-       			}
-       			else{
-       				window.localStorage[curDate] = JSON.stringify(food)+ ',';
-       				console.log('New ' + JSON.stringify(food) + ' to localStorage');
-       			}
-	     	} 
-	     	else {
-	       		console.log('Cancelled');
-	     	}
-   		});
-	};
+     			{ 
+			    text: '<i class="button button-icon icon ion-checkmark"></i>',
+			    type: 'button-icon',
+			    onTap: function() {	
+			    	calService.addDCals((food.calories * $scope.servings.data));
+   					console.log('added ' + (food.calories * $scope.servings.data));
+   					food.servings = $scope.servings.data;
+
+   					historyService.addToHistorySet(food);
+	       			}
+				  
+				},
+     			{ 
+			    text: '<i class="button button-icon icon-top ion-plus"></i>',
+			    type: 'button-icon',
+			    onTap: function() {
+			      $scope.servings.data++;
+			      event.preventDefault();
+			      console.log($scope.servings.data);
+			    	}
+  				},
+  				{ 
+			    text: '<i class="button button-icon icon-bottom ion-minus"></i>',
+			    type: 'button-icon',
+			    onTap: function() {
+			      $scope.servings.data--;
+			      event.preventDefault();
+			    	}
+		   		},
+     			{ 
+			    text: '<i class="button button-icon icon ion-close"></i>',
+			    type: 'button-icon',
+			    onTap: function() {
+			      $scope.servings.data = 1;
+			    }			    
+  			}]
+   		})
+
+		myPopup.then(function(){$scope.servings.data=1});;
+
+
+	}
+
+
 
 })
 
 //the dashboard controller
 //this will handle the Daily goal, daily calorie consumption, and the goal
 //A list of food consumed today will also be held
-.controller('DashCtrl', function($scope, calService, $ionicPopup,$filter){
+.controller('DashCtrl', function($scope, calService, $ionicPopup,$filter, historyService){
 	$scope.calories = calService.getDCals();
 	$scope.goal = calService.getGoal();
 	$scope.burnt = calService.getBurnt();
 	$scope.curDate = new Date;
 	$scope.curDate = $filter('date')($scope.curDate, "dd/MM/yyyy");
+	$scope.foodSet = {}; 
+	$scope.foodSet = historyService.getCurSet();
 
-	//this will provide the meals with permanent storage
-	var str = window.localStorage[$scope.curDate];
-
-	if(str){
-		str = str.substring(0, str.length - 1);
-		str = '[' + str + ']';
-		console.log(' localStor === '+str);
-		try{
-			$scope.todaysList = JSON.parse(str || []);
-		}
-		catch(err)
-		{
-			$scope.todaysList = "";
-		}
-	}
-	else{
-		$scope.todaysList = [];
-	
-	}
-
-	$scope.clearStorage = function(){
-		window.localStorage[$scope.curDate] = "";
-		console.log(' localStor cleared? === '+str);
-		location.reload();
-	};
+	console.log($scope.foodSet);
 
 	$scope.setGoal = function() {
 	$scope.data = {}
@@ -112,7 +119,6 @@ angular.module('calorific.controllers', [])
 		        type: 'button-positive',
 		        onTap: function(e) {
 		          	if (!$scope.data.burnt) {
-			            //don't allow the user to close unless he enters wifi password
 			            e.preventDefault();
 			        } 
 		          	else {
@@ -127,8 +133,11 @@ angular.module('calorific.controllers', [])
   });
 };
 })
-.controller('HistoryCtrl', function($scope, calService, $ionicPopup, $filter){
-	
+.controller('HistoryCtrl', function($scope, calService, $ionicPopup, $filter, historyService){
+
+	$scope.historySet = historyService.getHistorySet();
+	console.log($scope.historySet);
+
 })
 
 ;

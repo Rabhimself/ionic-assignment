@@ -31,10 +31,12 @@
  <div class="item item-divider item-icon-right">
     Today's Meals and Snacks         
   </div>
-  <ion-item collection-repeat="food in todaysList"> 
-        <div class="item item-button-right">
-            {{food.name}} <br> Calories: {{food.calories}}  per  {{food.measure}}
-        </div>
-      </ion-item>
+    <ion-item ng-repeat="food in foodSet.foods">
+      {{food.servings}} servings<br/>
+      {{food.name}}<br/>
+      {{food.calories}} calories per {{food.measure}}<br/>
+      {{food.calories * food.servings}} total calories
+
+    </ion-item> 
 	</ion-content>
 </ion-view>

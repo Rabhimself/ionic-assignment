@@ -1,5 +1,11 @@
-<ion-view name='history' view-title="History">
+<ion-view name='history'  view-title="History">
 	<ion-content>
-		<div>TEST</div>
+		<ion-item ng-repeat="set in historySet">
+			<h3>{{set.date}}</h3>
+			<ion-item ng-repeat="food in set.foods track by $index">
+			{{food.servings}} servings of {{food.name}}<br/>
+			Total Calories: {{food.servings * food.calories}}
+			</ion-item>
+		</ion-item>
 	</ion-content>
 </ion-view>

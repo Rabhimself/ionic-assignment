@@ -9,11 +9,11 @@
     	<ion-pane>
     		<input ng-model="search">
   		</ion-pane>
-  		<ion-item collection-repeat="food in foodList | filter:search"> 
-    		<div class="item item-button-right">
+  		<ion-item collection-repeat="food in foodList  | filter:search"> 
+    		<div class="item item-icon-right">
             {{food.name}} <br> Calories: {{food.calories}}  per  {{food.measure}}
-          <button class="button button-balanced" ng-click="showConfirm(food)">
-            <i class="icon ion-android-add-circle"></i>     
+
+            <i class="icon ion-android-add-circle" ng-click="showConfirm(food)"></i>     
           </button>
         </div>
   		</ion-item>

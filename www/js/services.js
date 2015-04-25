@@ -4,6 +4,7 @@ angular.module('calorific.services', [])
 .factory('calService', function(){
 	//These are saved as objects so that the data is passed by reference
 	//when being returned to controllers
+	
 	//calories consumed today
 	var dailyCals = { data : 0}
 	//todays goal (limit) for calorie consumption
@@ -70,5 +71,63 @@ angular.module('calorific.services', [])
 	          	});
 	        }
 	}
-});
+})
+
+.factory('historyService', function($filter)
+{
+	var historySet = [];
+	var curDate = new Date;
+	var curDate = $filter('date')(curDate, "dd/MM/yyyy");
+	var curSet = {};
+
+	if(window.localStorage['historySet'])
+		historySet = JSON.parse(window.localStorage['historySet'] || '[]');
+		
+
+	return{
+		addToHistorySet: function(food)//adds a food to the current day's set
+		{
+			var found = false;
+			historySet.forEach(function(set) 
+			{
+				if(set.date == curDate)
+				{
+					found = true;
+					set.foods.push(food);
+				}
+			});
+			if(!found)
+			{
+				var newSet = {};
+				newSet.date = curDate;
+				newSet.foods = [];
+				newSet.foods.push(food);
+				historySet.push(newSet);
+			}
+			window.localStorage['historySet'] = JSON.stringify(historySet);
+
+		},
+		getHistorySet: function()
+		{
+			return historySet;
+		},
+		getCurSet: function()
+		{
+			historySet.forEach(function(set) 
+			{
+				if(set.date == curDate)
+				{
+					console.log("returning");
+					console.log(set);
+					curSet = set;
+					console.log(curSet);
+					
+				}
+			});
+			return curSet;
+		}
+	}
+})
+
+;
 
