@@ -1,4 +1,4 @@
-<ion-view cache-view = "false" view-title="Today at a Glance">
+<ion-view view-title="Today at a Glance">
 	<ion-content>
 	<div>
     <!-- This button will allow the user to set a Goal for the day-->
@@ -31,8 +31,9 @@
  <div class="item item-divider item-icon-right">
     Today's Meals and Snacks         
   </div>
-    <ion-item ng-repeat="food in foodSet.foods">
-      {{food.servings}} servings<br/>
+    <ion-item ng-repeat="food in foodSet.foods track by $index">
+    <!-- For proper grammar, use ng-show to dictate the proper display -->
+      {{food.servings}} <span ng-show="{{food.servings}}==1">serving</span><span ng-show="{{food.servings}}!=1" class="ng-hide">servings</span><br/>
       {{food.name}}<br/>
       {{food.calories}} calories per {{food.measure}}<br/>
       {{food.calories * food.servings}} total calories

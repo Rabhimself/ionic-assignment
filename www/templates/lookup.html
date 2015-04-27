@@ -11,9 +11,9 @@
   		</ion-pane>
   		<ion-item collection-repeat="food in foodList  | filter:search"> 
     		<div class="item item-icon-right">
-            {{food.name}} <br> Calories: {{food.calories}}  per  {{food.measure}}
-
-            <i class="icon ion-android-add-circle" ng-click="showConfirm(food)"></i>     
+            {{food.name}} 
+            <br> Calories: {{food.calories}}  per  {{food.measure}}
+            <i class="icon ion-android-add-circle balanced" ng-click="showConfirm(food)"></i>     
           </button>
         </div>
   		</ion-item>

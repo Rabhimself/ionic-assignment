@@ -1,11 +1,17 @@
 <ion-view name='history'  view-title="History">
-	<ion-content>
-		<ion-item ng-repeat="set in historySet">
-			<h3>{{set.date}}</h3>
-			<ion-item ng-repeat="food in set.foods track by $index">
+	<ion-content >
+		<ion-item ng-repeat="set in historySet" padding="false">
+		    <div class="item item-divider">
+		      {{set.date}}
+		    </div>
+			<ion-item ng-repeat="food in set.foods track by $index" >
 			{{food.servings}} servings of {{food.name}}<br/>
 			Total Calories: {{food.servings * food.calories}}
 			</ion-item>
+			<div class="item item-divider">
+		      Total Calories that day: {{set.totalCals}}
+		      <span ng-if="set.goal">Goal: {{set.goal}}</span>
+		    </div>
 		</ion-item>
 	</ion-content>
 </ion-view>

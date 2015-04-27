@@ -30,7 +30,7 @@ angular.module('calorific.services', [])
 		addDCals: function(data){
 			dailyCals.data += parseInt(data);
 			window.localStorage['dailyCals'] = dailyCals.data;
-			console.log("addDCals called- dailyCals value is now " +JSON.stringify(dailyCals.data));
+			console.log("addDCals called- dailyCals value is now " +dailyCals.data);
 		},
 		//set the daily goal, a popup passes in the new goal
 		setGoal: function(data){
@@ -125,6 +125,11 @@ angular.module('calorific.services', [])
 				}
 			});
 			return curSet;
+		},
+		addGoal: function(goal)
+		{
+			var curSet = this.getCurSet();
+			curSet.goal = parseInt(goal);
 		}
 	}
 })

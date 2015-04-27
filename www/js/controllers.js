@@ -30,7 +30,7 @@ angular.module('calorific.controllers', [])
 				  
 				},
      			{ 
-			    text: '<i class="button button-icon icon-top ion-plus"></i>',
+			    text: '<i class="button button-icon icon ion-plus"></i>',
 			    type: 'button-icon',
 			    onTap: function() {
 			      $scope.servings.data++;
@@ -39,7 +39,7 @@ angular.module('calorific.controllers', [])
 			    	}
   				},
   				{ 
-			    text: '<i class="button button-icon icon-bottom ion-minus"></i>',
+			    text: '<i class="button button-icon icon ion-minus"></i>',
 			    type: 'button-icon',
 			    onTap: function() {
 			      $scope.servings.data--;
@@ -73,8 +73,11 @@ angular.module('calorific.controllers', [])
 	$scope.burnt = calService.getBurnt();
 	$scope.curDate = new Date;
 	$scope.curDate = $filter('date')($scope.curDate, "dd/MM/yyyy");
-	$scope.foodSet = {}; 
-	$scope.foodSet = historyService.getCurSet();
+	$scope.foodSet = {};
+	$scope.$on("$ionicView.beforeEnter", function(){
+		$scope.foodSet = historyService.getCurSet();
+
+	});  
 
 	console.log($scope.foodSet);
 
@@ -87,17 +90,18 @@ angular.module('calorific.controllers', [])
 	    scope: $scope,
 	    buttons: [
 	    	{ text: 'Cancel' },
-	      		{
-		        text: '<b>Save</b>',
-		        type: 'button-positive',
-		        onTap: function(e) {
-		          	if (!$scope.data.newGoal) {
-			            e.preventDefault();
-			        } 
-		          	else {
-			            return $scope.data.newGoal;
-          			}
-	        	}	
+      		{
+	        text: '<b>Save</b>',
+	        type: 'button-positive',
+	        onTap: function(e) {
+	          	if (!$scope.data.newGoal) {
+		            e.preventDefault();
+		        } 
+	          	else {
+	          		historyService.addGoal($scope.data.newGoal);
+		            return $scope.data.newGoal;
+      			}
+        	}	
 	      	}
 	    ]
 	});
@@ -135,7 +139,24 @@ angular.module('calorific.controllers', [])
 })
 .controller('HistoryCtrl', function($scope, calService, $ionicPopup, $filter, historyService){
 
-	$scope.historySet = historyService.getHistorySet();
+	$scope.historySet = historyService.getHistorySet().reverse();
+	$scope.historySet.forEach(function(set)
+	{
+		set.totalCals = 0;
+		set.foods.forEach(function(food)
+		{
+			set.totalCals += food.calories * food.servings;
+		})
+	})
+
+	$scope.$on("$ionicView.beforeEnter", function(){
+		$scope.historySet[0].totalCals = 0;
+		$scope.historySet[0].foods.forEach(function(food)
+		{
+			$scope.historySet[0].totalCals += food.calories * food.servings;
+		})
+
+	}); 
 	console.log($scope.historySet);
 
 })
