@@ -5,7 +5,7 @@ angular.module('calorific.controllers', [])
   		$scope.foodList = foodList;
   		$scope.servings = {data : 1};
 	});
-
+  	$scope.search = '';
 	$scope.showConfirm = function(food) {
 		var curDate = new Date;
 		

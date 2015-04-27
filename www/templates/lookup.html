@@ -1,21 +1,16 @@
 <ion-view name="lookup" view-title="Look Up Some Food" >
- <ion-header-bar class="bar-light bar-subheader">
-   <div>
-      <input type="search" placeholder="Filter foods..." ng-model="search" ng-focus="searchFocused = true"
-        ng-blur="searchFocused = false" ng-change="scrollTop()">
-    </div>
-    </ion-header-bar>
-    <ion-content>
-    	<ion-pane>
-    		<input ng-model="search">
-  		</ion-pane>
-  		<ion-item collection-repeat="food in foodList  | filter:search"> 
-    		<div class="item item-icon-right">
-            {{food.name}} 
-            <br> Calories: {{food.calories}}  per  {{food.measure}}
-            <i class="icon ion-android-add-circle balanced" ng-click="showConfirm(food)"></i>     
-          </button>
-        </div>
-  		</ion-item>
-  	</ion-content>
+<ion-content class="has-header">
+  	<ion-item collection-repeat="food in foodList  | filter:search.name:strict"> 
+    	<div class="item item-icon-right item-text-wrap">
+        {{food.name}} 
+        <br> Calories: {{food.calories}}  per  {{food.measure}}
+        <i class="icon ion-android-add balanced" ng-click="showConfirm(food)"></i>     
+      </div>
+  	</ion-item>
+  </ion-content>
+  <ion-footer-bar class="item item-input-inset">
+    <div class="item-input-wrapper">
+      <input type="search" placeholder="Search..." min-length="1" ng-model="search.name" ng-change="scrollTop()"></input>
+  </div>  
+</ion-footer-bar>
 </ion-view>
