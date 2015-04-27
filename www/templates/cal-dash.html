@@ -3,31 +3,28 @@
 	<div>
     <!-- This button will allow the user to set a Goal for the day-->
     <!--  -->
-    <div class="item item-divider">
+      <div class="item item-divider">
       {{curDate | date:'EEEE, d MMM yyyy'}}
     </div>
-      <a ng-click="setGoal()" class="item item-icon-left">
-		    <i class="icon ion-android-favorite-outline"></i>
-  		    Today's Goal
-    		<span class="badge badge-positive">
-      		{{goal.data}}
-			</span>
+    <div class="button-bar">
+      <a ng-click="setGoal()" class="button dashBoardBox">
+  		  Goal</br>
+      	{{currentSet.goal}}      
   		</a>
-  		<a class="item item-icon-left">
-			<i class="icon ion-pizza"></i>
-    		Calories Consumed Today
-    		<span class="badge badge-balanced">
-      		{{calories.data}}
-			</span>
+      <a class="button dashBoardBox">
+        Net</br>
+        {{currentSet.totalCals-currentSet.spent}}
+      </a>      
+  		<a  class="button dashBoardBox">
+    		Consumed</br>
+      	{{currentSet.totalCals}}
   		</a>
-  		<a ng-click="addBurnt()" class="item item-icon-left">
-			<i class="icon ion-android-bicycle"></i>
-    		Calories Spent Today
-    		<span class="badge badge-assertive">
-      		{{burnt.data}}
-			</span>
+  		<a ng-click="addSpent()" on-hold="modifySpent()" class="button dashBoardBox">
+    		Spent</br>
+      	{{currentSet.spent}}
   		</a>
   	</div>
+  </div>
  <div class="item item-divider item-icon-right">
     Today's Meals and Snacks         
   </div>

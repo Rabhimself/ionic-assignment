@@ -1,1 +1,5 @@
 /* Empty. Add your own CSS if you like */
+.dashBoardBox {
+    padding: 4px !important;
+    line-height: 100%
+}

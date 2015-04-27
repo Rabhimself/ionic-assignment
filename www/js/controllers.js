@@ -1,6 +1,6 @@
 angular.module('calorific.controllers', [])
 
-.controller('LookupCtrl', function($scope, $stateParams, $ionicPopup, $filter, foodService, calService, historyService) {
+.controller('LookupCtrl', function($scope, $stateParams, $ionicPopup, $filter, foodService, historyService) {
   	foodService.getFoodList().success(function(foodList){
   		$scope.foodList = foodList;
   		$scope.servings = {data : 1};
@@ -21,10 +21,7 @@ angular.module('calorific.controllers', [])
 			    text: '<i class="button button-icon icon ion-checkmark"></i>',
 			    type: 'button-icon',
 			    onTap: function() {	
-			    	calService.addDCals((food.calories * $scope.servings.data));
-   					console.log('added ' + (food.calories * $scope.servings.data));
-   					food.servings = $scope.servings.data;
-
+			    	food.servings = $scope.servings.data;
    					historyService.addToHistorySet(food);
 	       			}
 				  
@@ -35,7 +32,6 @@ angular.module('calorific.controllers', [])
 			    onTap: function() {
 			      $scope.servings.data++;
 			      event.preventDefault();
-			      console.log($scope.servings.data);
 			    	}
   				},
   				{ 
@@ -67,10 +63,8 @@ angular.module('calorific.controllers', [])
 //the dashboard controller
 //this will handle the Daily goal, daily calorie consumption, and the goal
 //A list of food consumed today will also be held
-.controller('DashCtrl', function($scope, calService, $ionicPopup,$filter, historyService){
-	$scope.calories = calService.getDCals();
-	$scope.goal = calService.getGoal();
-	$scope.burnt = calService.getBurnt();
+.controller('DashCtrl', function($scope, $ionicPopup,$filter, historyService){
+	$scope.currentSet = historyService.getCurSet();
 	$scope.curDate = new Date;
 	$scope.curDate = $filter('date')($scope.curDate, "dd/MM/yyyy");
 	$scope.foodSet = {};
@@ -106,18 +100,18 @@ angular.module('calorific.controllers', [])
 	    ]
 	});
 	myPopup.then(function(result) {
-  	calService.setGoal(parseInt(result));
+  	$scope.goal = historyService.getGoal();
   });
 }
-	$scope.addBurnt = function() {
-	$scope.data = {}
-	var myPopup = $ionicPopup.show({
+	$scope.addSpent = function() {
+		$scope.data = {}
+		var myPopup = $ionicPopup.show({
 
-	    template: '<input ng-model="data.burnt">',
-	    title: 'How many calories did you burn?',
-	    scope: $scope,
-	    buttons: [
-	    	{ text: 'Cancel' },
+		    template: '<input ng-model="data.burnt">',
+		    title: 'How many calories did you burn?',
+		    scope: $scope,
+		    buttons: [
+		    	{ text: 'Cancel' },
 	      		{
 		        text: '<b>Save</b>',
 		        type: 'button-positive',
@@ -126,20 +120,41 @@ angular.module('calorific.controllers', [])
 			            e.preventDefault();
 			        } 
 		          	else {
-			            return $scope.data.burnt;
-          			}
+			            historyService.addSpent($scope.data.burnt);
+	      			}
 	        	}	
-	      	}
-	    ]
-	});
-	myPopup.then(function(result) {
-  	calService.addBurnt(parseInt(result));
-  });
-};
-})
-.controller('HistoryCtrl', function($scope, calService, $ionicPopup, $filter, historyService){
+		      	}
+		    ]
+		});
+	};
+	$scope.modifySpent = function() {
+		$scope.data = {}
+		var myPopup = $ionicPopup.show({
 
-	$scope.historySet = historyService.getHistorySet().reverse();
+		    template: '<input ng-model="data.burnt">',
+		    title: 'Modify burnt calories',
+		    scope: $scope,
+		    buttons: [
+		    	{ text: 'Cancel' },
+	      		{
+		        text: '<b>Save</b>',
+		        type: 'button-positive',
+		        onTap: function(e) {
+		          	if (!$scope.data.burnt) {
+			            e.preventDefault();
+			        } 
+		          	else {
+			            historyService.modSpent($scope.data.burnt);
+	      			}
+	        	}	
+		      	}
+		    ]
+		});
+	};
+})
+.controller('HistoryCtrl', function($scope, $ionicPopup, $filter, historyService){
+
+	$scope.historySet = historyService.getHistorySet();
 	$scope.historySet.forEach(function(set)
 	{
 		set.totalCals = 0;
