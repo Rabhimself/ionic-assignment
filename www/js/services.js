@@ -17,42 +17,46 @@ angular.module('calorific.services', [])
 	}
 })
 
+//Service that handles the food history for the app, everything the user has entered as eaten
+//it also tracks the goal and the amount of calories burnt each day
+//the history set is an array of objects(sets), each set has a date, goal, spent, and foods array
 .factory('historyService', function($filter)
 {
 	var historySet = [];
-	var curDate = new Date;
-	var curDate = $filter('date')(curDate, "dd/MM/yyyy");
+	var curDate = new Date();
+	curDate = $filter('date')(curDate, "dd/MM/yyyy");
+	var curSet = {};
 
-
+	//check to see if there is a history set in local storage
 	if(window.localStorage['historySet'])
 		historySet = JSON.parse(window.localStorage['historySet'] || '[]');
 	else
 	{
-		historySet[0] = { date: curDate , foods : [], goal : 0, spent : 0, totalCals : 0}
+		//if not, create a new one at position 0
+		historySet[0] = { date: curDate , foods : [], goal : 0, spent : 0, totalCals : 0};
+		//and store it;
+		window.localStorage['historySet']=historySet;		
 	}
+	//curSet will trach which set is the current one in the historySet
+	//assume it is in position 0, every time a new set is added, use unshift to push it to position 0
+	curSet = historySet[0];
 
-	historySet.forEach(function(set) 
-	{
-		if(set.date == curDate)
-		{
-			curSet = set;
-		}
-	});
 	return{
 		addToHistorySet: function(food)//adds a food to the current day's set
 		{
+			//update the date, otherwise a user can add a new food at a later date without
+			//reinitializing the app, the old date will still be stored and the app will operate
+			//as if it isnt a new day
+			curDate = new Date;
+			curDate = $filter('date')(curDate, "dd/MM/yyyy");
 
-			var found = false;
-			historySet.forEach(function(set) 
+			if(historySet[0].date == curDate)
 			{
-				if(set.date == curDate)
-				{
-					found = true;
-					set.foods.unshift(food);
-					set.totalCals += parseInt(food.calories*food.servings);
-				}
-			});
-			if(!found)
+				console.log("dates match");
+				historySet[0].foods.unshift(food);
+				historySet[0].totalCals += parseInt(food.calories*food.servings);
+			}
+			else
 			{
 				var newSet = {};
 				newSet.date = curDate;
@@ -61,7 +65,6 @@ angular.module('calorific.services', [])
 				historySet.unshift(newSet);
 			}
 			window.localStorage['historySet'] = JSON.stringify(historySet);
-
 		},
 		getHistorySet: function()
 		{
@@ -69,6 +72,20 @@ angular.module('calorific.services', [])
 		},
 		getCurSet: function()
 		{
+			curDate = new Date;
+			curDate = $filter('date')(curDate, "dd/MM/yyyy");
+
+			if(historySet[0].date == curDate)
+			{
+				curSet = historySet[0];
+			}
+			else
+			{
+				var newSet = {};
+				newSet.date = curDate;
+				newSet.foods = [];
+				historySet.unshift(newSet);				
+			}			
 			return curSet;
 		},
 		addGoal: function(goal)

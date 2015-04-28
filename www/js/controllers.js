@@ -65,6 +65,7 @@ angular.module('calorific.controllers', [])
 //A list of food consumed today will also be held
 .controller('DashCtrl', function($scope, $ionicPopup,$filter, historyService){
 	$scope.currentSet = historyService.getCurSet();
+	console.log($scope.currentSet)
 	$scope.curDate = new Date;
 	$scope.curDate = $filter('date')($scope.curDate, "dd/MM/yyyy");
 	$scope.foodSet = {};
