@@ -1,0 +1,15 @@
+<ion-view view-title="Today">
+	<ion-content>
+   		<ion-item class="item item-icon-right" ng-repeat="dish in favsList track by $index" >
+      		{{dish.name}}<br/>
+      		{{dish.calories}} calories per {{dish.measure}}<br/>
+      		<i class="icon ion-android-add balanced" ng-click="showConfirm(dish)"></i>
+    	</ion-item> 	
+	</ion-content>
+  	<ion-footer-bar class="bar-dark" >
+  		<div class="title">
+			<button class="button button-full button-clear" ng-click="newFavorite()">Create a new favorite dish</button> 
+		</div>
+	</ion-footer-bar>
+</ion-view>
+

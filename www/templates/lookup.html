@@ -1,11 +1,9 @@
 <ion-view name="lookup" view-title="Look Up Some Food" >
 <ion-content class="has-header">
-  	<ion-item collection-repeat="food in foodList  | filter:search.name:strict"> 
-    	<div class="item item-icon-right item-text-wrap">
+  	<ion-item class="item item-icon-right" collection-repeat="food in foodList  | filter:search.name:strict"> 
         {{food.name}} 
         <br> Calories: {{food.calories}}  per  {{food.measure}}
         <i class="icon ion-android-add balanced" ng-click="showConfirm(food)"></i>     
-      </div>
   	</ion-item>
   </ion-content>
   <ion-footer-bar class="item item-input-inset">

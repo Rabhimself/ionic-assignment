@@ -2,4 +2,7 @@
 .dashBoardBox {
     padding: 4px !important;
     line-height: 100%
+},
+.noPadding {
+	padding: 0px !important;
 }

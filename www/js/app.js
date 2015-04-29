@@ -55,6 +55,16 @@ angular.module('calorific', ['ionic', 'calorific.controllers', 'calorific.servic
         controller: 'HistoryCtrl'
       }
     }
+  })
+
+  .state('cal.favs', {
+    url: '/favs',
+    views: {
+      'favs': {
+        templateUrl: "templates/favs.html",
+        controller: 'favsCtrl'
+      }
+    }
   });
   $urlRouterProvider.otherwise('/cal/dash');
 });

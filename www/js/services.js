@@ -83,6 +83,7 @@ angular.module('calorific.services', [])
 			{
 				var newSet = {};
 				newSet.date = curDate;
+				newSet.spent = 0;
 				newSet.foods = [];
 				historySet.unshift(newSet);				
 			}			
@@ -117,9 +118,26 @@ angular.module('calorific.services', [])
 			curSet.spent = parseInt(spent);
 			window.localStorage['historySet'] = JSON.stringify(historySet);
 		}
-
 	}
 })
+.factory('favsService', function(){
+	var favsList = [];
 
+	if(window.localStorage['favsList'])
+		favsList = JSON.parse(window.localStorage['favsList'] || '[]');
+	else	
+		favsList = [];
+
+	return{
+		getFavsList : function(){
+			return favsList;
+		},
+		addToFavsList : function(newFav){
+			var fav = newFav;
+			favsList.push(fav);
+			window.localStorage['favsList'] = JSON.stringify(favsList);
+		}
+	}
+})
 ;
 

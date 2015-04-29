@@ -47,8 +47,8 @@ angular.module('calorific.controllers', [])
 			    type: 'button-icon',
 			    onTap: function() {
 			      $scope.servings.data = 1;
-			    }			    
-  			}]
+			    }
+			}]			    
    		})
 
 		myPopup.then(function(){$scope.servings.data=1});;
@@ -56,10 +56,7 @@ angular.module('calorific.controllers', [])
 
 	}
 
-
-
 })
-
 //the dashboard controller
 //this will handle the Daily goal, daily calorie consumption, and the goal
 //A list of food consumed today will also be held
@@ -102,8 +99,8 @@ angular.module('calorific.controllers', [])
 	});
 	myPopup.then(function(result) {
   	$scope.goal = historyService.getGoal();
-  });
-}
+  	});
+	}
 	$scope.addSpent = function() {
 		$scope.data = {}
 		var myPopup = $ionicPopup.show({
@@ -174,7 +171,88 @@ angular.module('calorific.controllers', [])
 
 	}); 
 	console.log($scope.historySet);
-
 })
+.controller('favsCtrl', function($scope, $ionicPopup, favsService, $filter, historyService){
+	$scope.favsList = []
+	$scope.favsList = favsService.getFavsList();
+	console.log($scope.favsList);
+	
+	$scope.newFavorite = function() {
+		$scope.newFav = {};
+		var myPopup = $ionicPopup.show({
 
-;
+		    templateUrl: 'templates/newFavPopup.html',
+		    title: 'New favorite meal',
+		    scope: $scope,
+		    buttons: 
+		    [
+		    	{ text: 'Cancel' },
+	      		{
+			        text: '<b>Save</b>',
+			        type: 'button-positive',
+			        onTap: function(e) 
+			        {
+			        	console.log("asdf");
+			          	if (!$scope.newFav.name && !$scope.newFav.calories && !$scope.newFav.measure) 
+			          	{
+				            e.preventDefault();
+				        } 
+			          	else 
+			          	{
+		          			favsService.addToFavsList($scope.newFav);
+		      			}
+
+		        	}	
+		      	}
+		    ]
+		});
+	};
+
+	$scope.showConfirm = function(food) {
+	var curDate = new Date;
+	$scope.servings={data:1};
+	curDate = $filter('date')(curDate, "dd/MM/yyyy");
+		var myPopup = $ionicPopup.show({
+ 		title: 'Servings',
+ 		scope : $scope,
+ 		subTitle: 'How many servings?',
+ 		template: '{{servings.data}} servings',
+ 		buttons: [
+
+ 			{ 
+		    text: '<i class="button button-icon icon ion-checkmark"></i>',
+		    type: 'button-icon',
+		    onTap: function() {	
+		    	food.servings = $scope.servings.data;
+					historyService.addToHistorySet(food);
+       			}
+			  
+			},
+ 			{ 
+		    text: '<i class="button button-icon icon ion-plus"></i>',
+		    type: 'button-icon',
+		    onTap: function() {
+		      $scope.servings.data++;
+		      event.preventDefault();
+		    	}
+				},
+				{ 
+		    text: '<i class="button button-icon icon ion-minus"></i>',
+		    type: 'button-icon',
+		    onTap: function() {
+		      $scope.servings.data--;
+		      event.preventDefault();
+		    	}
+	   		},
+ 			{ 
+		    text: '<i class="button button-icon icon ion-close"></i>',
+		    type: 'button-icon',
+		    onTap: function() {
+		      $scope.servings.data = 1;
+		    }
+		}]			    
+	})
+	myPopup.then(function(){$scope.servings.data=1});
+	}
+	
+});
