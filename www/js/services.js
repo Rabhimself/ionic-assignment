@@ -56,7 +56,8 @@ angular.module('calorific.services', [])
 				historySet[0].foods.unshift(food);
 				historySet[0].totalCals += parseInt(food.calories*food.servings);
 			}
-			else
+			else//if the current date does not match the one for the newest set
+				//create a new one
 			{
 				var newSet = {};
 				newSet.date = curDate;
@@ -64,6 +65,7 @@ angular.module('calorific.services', [])
 				newSet.foods.unshift(food);
 				historySet.unshift(newSet);
 			}
+			//lastly, update the local storage string
 			window.localStorage['historySet'] = JSON.stringify(historySet);
 		},
 		getHistorySet: function()
@@ -71,7 +73,8 @@ angular.module('calorific.services', [])
 			return historySet;
 		},
 		getCurSet: function()
-		{
+		{	
+			//gets the current date, checks to the see if the last history set to be added is today's
 			curDate = new Date;
 			curDate = $filter('date')(curDate, "dd/MM/yyyy");
 
@@ -79,7 +82,7 @@ angular.module('calorific.services', [])
 			{
 				curSet = historySet[0];
 			}
-			else
+			else//if the most recent set is not the current day's set, create a new one and push it to the beginning of the array
 			{
 				var newSet = {};
 				newSet.date = curDate;
@@ -89,9 +92,28 @@ angular.module('calorific.services', [])
 			}			
 			return curSet;
 		},
+		//adds a goal to the current set
 		addGoal: function(goal)
-		{
-			historySet[0].goal = parseInt(goal);
+		{	
+
+			curDate = new Date;
+			curDate = $filter('date')(curDate, "dd/MM/yyyy");
+
+			if(historySet[0].date == curDate)
+			{
+				//adds a goal to the current set
+				historySet[0].goal = parseInt(goal);				
+			}
+			else
+			{
+				var newSet = {};
+				newSet.date = curDate;
+				newSet.spent = 0;
+				newSet.foods = [];
+				historySet.unshift(newSet);
+				//adds a goal to the current set
+				historySet[0].goal = parseInt(goal);					
+			}
 			window.localStorage['historySet'] = JSON.stringify(historySet);
 		},
 		getGoal: function()
@@ -106,6 +128,7 @@ angular.module('calorific.services', [])
 		},
 		addSpent: function(spent)
 		{
+			this.getCurSet();
 			curSet.spent += parseInt(spent);
 			window.localStorage['historySet'] = JSON.stringify(historySet);
 		},
